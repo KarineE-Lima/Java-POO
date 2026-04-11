@@ -1,4 +1,4 @@
-package ex0017;
+package ex017;
 
 public class AppConfig {
     private String appName;
