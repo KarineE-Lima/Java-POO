@@ -13,28 +13,40 @@ public class AppConfig {
         this.maxConnections = 1;
         this.timeOutSeconds = 0;
         this.isDebugMode = false;
+        validateConfig();
     }
     public AppConfig(String appName, String version, int maxConnections){
         this(appName);
         this.version = version;
         this.maxConnections = maxConnections;
+        validateConfig();
     }
     public AppConfig(String appName, String version, int maxConnections, int timeOutSeconds, boolean isDebugMode){
         this(appName, version, maxConnections);
         this.timeOutSeconds = timeOutSeconds;
         this.isDebugMode = isDebugMode;
+        validateConfig();
     }
     public void updateSettings(int maxConnections, int timeOutSeconds){
-        if(validateConfig()){
             this.maxConnections = maxConnections;
             this.timeOutSeconds = timeOutSeconds;
-        }
+            validateConfig();
     }
     public void updateSettings(boolean isDebugMode){
         this.isDebugMode = isDebugMode;
     }
-    private boolean validateConfig(){
-        return (appName != null || !appName.equals("")) && (version != null || !version.equals("")) && maxConnections > 0 && timeOutSeconds >=0;
+    private void validateConfig(){
+        if(appName == null || appName.trim().isEmpty())
+            throw new IllegalArgumentException("App Name não pode ser vazio...");
+        if(version == null || version.trim().isEmpty())
+            throw new IllegalArgumentException("Version não pode ser vazia.");
+        if(maxConnections <= 0)
+            throw new IllegalArgumentException("Max conections não pode ser menor que um.");
+        if(timeOutSeconds < 0)
+            throw new IllegalArgumentException("Time out seconds não pode ser negativo.");
+    }
+    public String toString(){
+        return "appName: " + appName + " version: " + version + " maxConnections: " + maxConnections + " timeOutSeconds: " + timeOutSeconds + " isDebugMode: " + isDebugMode;
     }
     
 }
